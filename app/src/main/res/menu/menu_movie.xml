@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/sory_by"
+        android:orderInCategory="101"
+        android:title="@string/sort_by"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/mi_popularity"
+                android:title="@string/mi_popular"/>
+            <item
+                android:id="@+id/mi_rating"
+                android:title="@string/mi_rated"/>
+        </menu>
+    </item>
+</menu>
