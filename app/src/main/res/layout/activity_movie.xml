@@ -29,7 +29,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="342dp"
+            android:layout_height="@dimen/moviePosterMainHeight"
             android:id="@+id/movie_img"
             android:scaleType="fitXY" />
 
@@ -41,7 +41,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/movieTextViewHeight"
                 android:ems="10"
                 android:text="Synopsis"
                 android:gravity="center_vertical"
@@ -65,7 +65,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/movieTextViewHeight"
                 android:ems="10"
                 android:text="Rating"
                 android:gravity="center_vertical"
@@ -89,7 +89,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="@dimen/movieTextViewHeight"
                     android:ems="10"
                     android:gravity="center_vertical|right"
                     android:id="@+id/movie_rating"
@@ -106,7 +106,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/movieTextViewHeight"
                 android:ems="10"
                 android:text="Release Date"
                 android:gravity="center_vertical"
@@ -115,13 +115,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/movieTextViewHeight"
 
                 android:ems="10"
                 android:id="@+id/movie_release"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"/>
+                android:gravity="center_vertical"/>
         </LinearLayout>
 
     </LinearLayout>

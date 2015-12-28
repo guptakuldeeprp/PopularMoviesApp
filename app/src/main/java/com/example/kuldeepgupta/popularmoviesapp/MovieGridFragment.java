@@ -94,6 +94,7 @@ public class MovieGridFragment extends Fragment {
      */
     private boolean refreshGrid(SortBy sortBy) {
         if(ema != null && grid != null) {
+            Log.v(NAME,"Refreshing movie grid with new sortby condition: " + sortBy);
             ema.setSortBy(sortBy);
             ema.setPage(1);
             ema.getDelegateAdapter().clear();
@@ -115,10 +116,8 @@ public class MovieGridFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mi_popularity:
-                Log.i(NAME,"mi_popularity clicked");
                 return refreshGrid(SortBy.DEFAULT);
             case R.id.mi_rating:
-                Log.i(NAME,"mi_rating clicked");
                 return refreshGrid(new SortBy(SortBy.Option.vote_average, SortBy.Order.desc));
         }
         return true;

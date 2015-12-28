@@ -101,7 +101,7 @@ public class TmdbUtil {
 
     public List<Movie> discoverMovies(int page, SortBy sortBy) {
         String movieDiscUrlStr = getMovieDiscoveryUrl(page, sortBy);
-        System.out.println("movieDiscUrlStr: " + movieDiscUrlStr);
+        Log.v(NAME, "movieDiscUrlStr: " + movieDiscUrlStr);
         try {
             HttpResponseWrapper response = HttpHelper.get(movieDiscUrlStr);
             if(response.isFailed()) {
@@ -124,7 +124,6 @@ public class TmdbUtil {
                 Log.e(NAME, "Failed to discover movies. Status Message: " + errMsg);
             } else {
                 try {
-                    System.out.println("Movie discovery response: " + response.getResponse());
                     JSONObject jsonResp = response.buildJsonFromResponse();
                     JSONArray results = jsonResp.getJSONArray(RESULTS_KEY);
 
@@ -132,7 +131,7 @@ public class TmdbUtil {
                     for(int i = 0; i < results.length(); i++) {
                         movies.add(buildMovieFromJson(results.getJSONObject(i)));
                     }
-                    System.out.println("Total movies fetched: " + movies.size());
+                    Log.v(NAME,"Total movies fetched: " + movies.size());
                     return movies;
 
                 } catch (JSONException e) {

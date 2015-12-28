@@ -69,12 +69,12 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
         TextView text=(TextView)view.findViewById(R.id.movie_caption);
         ImageView image=(ImageView)view.findViewById(R.id.movie_thumbnail);
         //Movie movie = (Movie) view.getTag();
-        System.out.println("Movie tag in the view: " + movie);
         text.setText(movie.getTitle());
 
         Picasso.with(context)
                 .load(tmdbUtil.getPosterUrl(movie))
-                //.resize(100,100)
+                .fit()
+                //.resize(150,150)
                 //.centerCrop()
                 .into(image);
 
