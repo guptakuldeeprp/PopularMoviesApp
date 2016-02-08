@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kuldeepgupta.popularmoviesapp.R;
-import com.example.kuldeepgupta.popularmoviesapp.tmdb.Movie;
+import com.example.kuldeepgupta.popularmoviesapp.tmdb.movie.Movie;
 import com.example.kuldeepgupta.popularmoviesapp.tmdb.TmdbUtil;
 import com.squareup.picasso.Picasso;
 
@@ -73,12 +73,16 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
 
         Picasso.with(context)
                 .load(tmdbUtil.getPosterUrl(movie))
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .fit()
-                //.resize(150,150)
-                //.centerCrop()
+                        //.resize(150,150)
+                        //.centerCrop()
                 .into(image);
 
         view.setTag(movie);
         return view;
     }
+
+
 }
