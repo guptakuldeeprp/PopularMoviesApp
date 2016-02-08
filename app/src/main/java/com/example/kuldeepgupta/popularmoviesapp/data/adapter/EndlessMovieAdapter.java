@@ -12,12 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
-import com.example.kuldeepgupta.popularmoviesapp.tmdb.Movie;
+
 
 import java.util.List;
 
 import com.example.kuldeepgupta.popularmoviesapp.tmdb.SortBy;
 import com.example.kuldeepgupta.popularmoviesapp.tmdb.TmdbUtil;
+import com.example.kuldeepgupta.popularmoviesapp.tmdb.movie.Movie;
 
 /**
  * Created by kuldeep.gupta on 25-12-2015.

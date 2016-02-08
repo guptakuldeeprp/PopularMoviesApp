@@ -1,21 +1,38 @@
 <resources>
+
+    <!-- titles and names -->
     <string name="app_name">PopularMoviesApp</string>
     <string name="action_settings">Settings</string>
-    <string name="tmdb_api_key"></string>
-    <string name="tmdb_config">/configuration</string>
-    <string name="tmdb_movie_discover">/discover/movie</string>
-    <string name="poster_size">w154</string>
-    <string name="poster_main_size">w342</string>
-    <string name="thumbnail_size">100</string>
-    <string name="tmdb_api_base_url">http://api.themoviedb.org/3</string>
-    <string name="base_url_key">base_url</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="title_activity_fullscreen_movie">FullscreenMovieActivity</string>
     <string name="title_activity_movie">MovieActivity</string>
     <string name="sort_by">Sort</string>
     <string name="mi_popular">Most Popular</string>
     <string name="mi_rated">Highest Rated</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
+
+
+    <!-- TMDB related constants -->
+    <string name="tmdb_api_key">38ccb91b04222b3a0450aebdf66d9e51</string>
+    <string name="tmdb_config">/configuration</string>
+    <string name="tmdb_movie_discover">/discover/movie</string>
+    <string name="tmdb_movie_video">/movie/%d/videos</string>
+    <string name="tmdb_movie_review">/movie/%d/reviews</string>
+    <string name="poster_size">w154</string>
+    <string name="poster_main_size">w342</string>
+    <string name="thumbnail_size">100</string>
+    <string name="tmdb_api_base_url">http://api.themoviedb.org/3</string>
+    <string name="base_url_key">base_url</string>
+    <string name="youtube_base_url">https://www.youtube.com/watch?v=</string>
+
+
+    <!-- app constants -->
+    <string name="movie_arr_key">movie_arr</string>
+    <string name="movie_key">movie</string>
+
+
+    <string name="large_dev">false</string>
+    <string name="mi_fav">Favourites</string>
+    <string name="isFavView">isFavView</string>
+    <string name="share_trailer">Share Trailer URL</string>
 </resources>
