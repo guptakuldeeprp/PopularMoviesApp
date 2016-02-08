@@ -40,12 +40,26 @@ public class Movie implements Parcelable {
     public Movie() {
     }
 
+    // old constructor
     public Movie(long mid, String title, String posterPath, String releaseDate, String plotSynopsis, double userRating) {
         this.mid = mid;
         this.title = title;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
         this.plotSynopsis = plotSynopsis;
+
+        this.userRating = userRating;
+        trailerKeys = new ArrayList<>();
+    }
+
+    // new constructor
+    public Movie(long mid, String title, String posterPath, String releaseDate, String plotSynopsis, String posterSaveLoc, double userRating) {
+        this.mid = mid;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.plotSynopsis = plotSynopsis;
+        this.posterSaveLoc = posterSaveLoc;
         this.userRating = userRating;
         trailerKeys = new ArrayList<>();
     }

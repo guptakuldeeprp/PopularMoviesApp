@@ -65,7 +65,6 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
     void startProgressAnimation() {
         if (pendingView!=null) {
             pendingView.startAnimation(rotate);
-
         }
     }
 
@@ -127,18 +126,20 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
 
     public void setList(List<T> list) {
         this.list = list;
+        notifyDataSetChanged();
     }
 
-    /*@Override
+    @Override
     protected boolean onException(View pendingView, Exception e) {
-        if(pendingView != null) {
+        Log.e(TAG,e.getMessage(),e);
+        /*if(pendingView != null) {
             Log.w(TAG,"disabling pending view");
             pendingView.setVisibility(View.GONE);
-        }
-        return false;
+            //this.pendingView = null;
+        }*/
+        return true;
         //return super.onException(pendingView, e);
     }
-*/
     public ArrayAdapter getDelegateAdapter() {
         return (ArrayAdapter) getWrappedAdapter();
     }

@@ -146,7 +146,7 @@ public class TmdbUtil {
 
     public List<Movie> discoverMovies(int page, SortBy sortBy) {
         String movieDiscUrlStr = getMovieDiscoveryUrl(page, sortBy);
-        Log.w(TAG, "movieDiscUrlStr: " + movieDiscUrlStr);
+        //Log.w(TAG, "movieDiscUrlStr: " + movieDiscUrlStr);
         try {
             HttpResponseWrapper response = HttpHelper.get(movieDiscUrlStr);
             if(response.isFailed()) {
@@ -170,7 +170,7 @@ public class TmdbUtil {
 
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         catch (JSONException e) {
             Log.e(TAG, "Obtained response is not a valid JSON string: " + e.getMessage(), e);
@@ -193,7 +193,7 @@ public class TmdbUtil {
     public List<String> fetchReviews(long movieId, int page) {
         try {
             String reviewUrl = getMovieReviewUrl(movieId);
-            Log.w(TAG,"Movies Review URL: " + reviewUrl);
+            //Log.w(TAG,"Movies Review URL: " + reviewUrl);
             HttpResponseWrapper response = HttpHelper.get(reviewUrl);
             if(response.isFailed()) {
                 Log.e(TAG,"HTTP request failed!");
@@ -241,7 +241,7 @@ public class TmdbUtil {
 
         try {
             String videoUrl = getMovieVideoUrl(movieId);
-            Log.w(TAG,"Movie trailer URL: " + videoUrl);
+            //Log.w(TAG,"Movie trailer URL: " + videoUrl);
             HttpResponseWrapper response = HttpHelper.get(videoUrl);
             if(response.isFailed()) {
                 Log.e(TAG,"HTTP request failed!");

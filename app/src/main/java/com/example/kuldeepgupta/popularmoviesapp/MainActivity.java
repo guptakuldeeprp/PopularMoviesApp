@@ -2,7 +2,6 @@ package com.example.kuldeepgupta.popularmoviesapp;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         //MovieDetailsFragment
         removeDetailsFragment();
 
-        findViewById(R.id.fragment_container).setVisibility(View.GONE);
+        findViewById(R.id.fragment_details_container).setVisibility(View.GONE);
         //invalidateOptionsMenu();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //getSupportActionBar().setIcon(R.drawable.ic_popup_sync_1);
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, MovieGridFragment.newInstance())
+                    .add(R.id.fragment_container, MovieGridFragment.newInstance())
                     .commit();
         }
 
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
     public void onFragmentInteraction(Movie movie) {
 
         if (cutil.isLargeDevice()) {
-            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.fragment_details_container).setVisibility(View.VISIBLE);
             Log.w(TAG, "This is a a large device");
             Bundle arguments = new Bundle();
             Log.w(TAG, "Setting movie to argument: " + movie);
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
             MovieDetailsFragment fragment = MovieDetailsFragment.newInstance();
             fragment.setArguments(arguments);
             //getSupportFragmentManager().beginTransaction().replace(R.id.movie_details_fragment_inner, fragment).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, MOVIE_DETAILS_FRAGMENT_TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_details_container, fragment, MOVIE_DETAILS_FRAGMENT_TAG).commit();
         } else {
 
             Log.w(TAG, "This is a small device");

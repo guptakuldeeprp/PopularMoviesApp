@@ -24,12 +24,15 @@ public class AsyncFavouriteMovieAdapter extends AbstractAsyncArrayAdapter<Movie>
 
     private static final String TAG = AsyncFavouriteMovieAdapter.class.getName();
     private Context context;
-    /** checks whether any movie is marked as fav. Helps in choosing the pending view**/
+    /**
+     * checks whether any movie is marked as fav. Helps in choosing the pending view
+     **/
     private static boolean favEmpty = true;
     //private View pendingView;
 
     public AsyncFavouriteMovieAdapter(Context context, int resource, List<Movie> movies) {
         super(new MovieAdapter(context, resource, movies));
+        //setRunInBackground(false);
         this.context = context;
         if (favEmpty) {
             long favEntries = DatabaseUtils.queryNumEntries(MovieSQLiteOpenHelper.getInstance(context).getReadableDatabase(), MovieColumns.TABLE_NAME);
@@ -46,18 +49,35 @@ public class AsyncFavouriteMovieAdapter extends AbstractAsyncArrayAdapter<Movie>
             imgView.setImageResource(R.drawable.blank);
             //pendingView = imgView;
             return imgView;
-        } else{
+        } else {
             return super.getPendingView(parent);
         }
 
     }
 
+   /* @Override
+    protected void appendCachedData() {
+        super.appendCachedData();
+        stopAppending();
+        if(pendingView != null) {
+            Log.w(TAG,"Disabling pending view");
+            pendingView.setVisibility(View.GONE);
+            pendingView = null;
+        }
+
+    }*/
+    /*@Override
+    public void onDataReady() {
+        Log.w(TAG,"onDataReady() called");
+        super.onDataReady();
+    }*/
+
     @Override
     protected List<Movie> loadListData(int page) {
         if (page == 1) {
-            Log.i(TAG, "Getting saved fav movies");
+            //Log.i(TAG, "Getting saved fav movies");
             List<Movie> favMovies = MovieUtil.getSavedMovies(context);
-            Log.i(TAG, "favMovies: " + favMovies);
+            //Log.i(TAG, "favMovies: " + favMovies);
             return favMovies;
             //return MovieUtil.getSavedMovies(context);
         }

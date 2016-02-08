@@ -20,6 +20,7 @@ import com.example.kuldeepgupta.popularmoviesapp.data.adapter.async.AsyncFavouri
 import com.example.kuldeepgupta.popularmoviesapp.data.adapter.async.AsyncMovieAdapter;
 import com.example.kuldeepgupta.popularmoviesapp.tmdb.movie.Movie;
 import com.example.kuldeepgupta.popularmoviesapp.tmdb.SortBy;
+import com.example.kuldeepgupta.popularmoviesapp.tmdb.movie.MovieUtil;
 import com.example.kuldeepgupta.popularmoviesapp.util.CommonUtil;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class MovieGridFragment extends Fragment {
         if (savedInstanceState != null) {
             isFavView = savedInstanceState.getBoolean(getString(R.string.isFavView));
             movies = (List<Movie>) savedInstanceState.get(getString(R.string.movie_arr_key));
-            Log.i(TAG, "Retrieved list of movies from savedInstanceState");
+            //Log.i(TAG, "Retrieved list of movies from savedInstanceState");
             if (movies == null)
                 movies = new ArrayList<>();
         } else {
@@ -85,7 +86,7 @@ public class MovieGridFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.w(TAG,"onCreateOptionsMenu MovieGridFragment called");
+        //Log.w(TAG,"onCreateOptionsMenu MovieGridFragment called");
         //menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_movie, menu);
@@ -97,7 +98,7 @@ public class MovieGridFragment extends Fragment {
         outState.putBoolean(getString(R.string.isFavView), isFavView);
         List<Movie> list = movieAdapter.getUnderlyingList();
         if (list != null) {
-            Log.i(TAG, "Saving list of movies onSaveInstanceState");
+            //Log.i(TAG, "Saving list of movies onSaveInstanceState");
             outState.putParcelableArrayList(getString(R.string.movie_arr_key), (ArrayList<? extends Parcelable>) list);
         }
     }
@@ -110,8 +111,6 @@ public class MovieGridFragment extends Fragment {
         if (movieAdapter != null) {
             movieAdapter.setPage(0);
             movieAdapter.getDelegateAdapter().clear();
-            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
-            movieAdapter.notifyDataSetChanged();
             if (isFavView) {
                 isFavView = false;
                 movieAdapter = createMovieAdapter(isFavView, sortBy);
@@ -120,6 +119,8 @@ public class MovieGridFragment extends Fragment {
             //TODO: Find a better way to achieve this
             ((AsyncMovieAdapter) movieAdapter).setSortBy(sortBy);
             grid.setAdapter(movieAdapter);
+            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
+            movieAdapter.notifyDataSetChanged();
             return true;
         } else {
             Log.e(TAG, "movieAdapter is not found in the fragment!");
@@ -133,13 +134,14 @@ public class MovieGridFragment extends Fragment {
         if (movieAdapter != null) {
             movieAdapter.setPage(0);
             movieAdapter.getDelegateAdapter().clear();
-            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
-            movieAdapter.notifyDataSetChanged();
+            //movieAdapter.getDelegateAdapter().addAll(MovieUtil.getSavedMovies(getActivity()));
             if (!isFavView) {
                 isFavView = true;
                 movieAdapter = createMovieAdapter(isFavView, null);
             }
             grid.setAdapter(movieAdapter);
+            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
+            movieAdapter.notifyDataSetChanged();
             return true;
         } else {
             Log.e(TAG, "movieAdapter is not found in the fragment!");
@@ -213,12 +215,12 @@ public class MovieGridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.w(TAG,"onCreateView called");
+
         View rootView = inflater.inflate(R.layout.grid_movie, container, false);
-        Log.w(TAG,"fragment view inflated");
+
         AbstractAsyncArrayAdapter<Movie> arrAdapter = null;
         movieAdapter = createMovieAdapter(isFavView, SortBy.DEFAULT);
-        Log.w(TAG,"MovieAdapter set");
+
         /*if (isFavView) {
             //arrAdapter = new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
             movieAdapter = getMovieAdapter()
@@ -234,7 +236,6 @@ public class MovieGridFragment extends Fragment {
 
         //grid.setAdapter(arrAdapter);
         grid.setAdapter(movieAdapter);
-        Log.w(TAG, "Adatper set to grid");
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

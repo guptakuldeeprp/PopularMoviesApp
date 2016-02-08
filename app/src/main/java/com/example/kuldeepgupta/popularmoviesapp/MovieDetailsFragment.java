@@ -27,6 +27,7 @@ import com.example.kuldeepgupta.popularmoviesapp.tmdb.movie.MovieUtil;
 import com.example.kuldeepgupta.popularmoviesapp.util.CommonUtil;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -92,10 +93,11 @@ public class MovieDetailsFragment extends Fragment {
 
         //Log.w(TAG, getActivity().getClass().getName());
         if (cutil.isLargeDevice()) {
-            Log.w(TAG, "created as a fragment within " + getActivity().getClass().getName());
-            movie = (Movie) getArguments().getParcelable(getString(R.string.movie_key));
+            //Log.w(TAG, "created as a fragment within " + getActivity().getClass().getName());
+            if (getArguments() != null)
+                movie = (Movie) getArguments().getParcelable(getString(R.string.movie_key));
         } else {
-            Log.w(TAG, "created as a fragment in new " + getActivity().getIntent().toString());
+            //Log.w(TAG, "created as a fragment in new " + getActivity().getIntent().toString());
             if (getActivity().getIntent().getExtras() != null)
                 movie = (Movie) getActivity().getIntent().getExtras().getParcelable(getString(R.string.movie_key));
         }
@@ -175,15 +177,25 @@ public class MovieDetailsFragment extends Fragment {
             trailerList.setOnItemClickListener(new TrailerClickListener(movie));
 
             ImageView imgView = (ImageView) rootView.findViewById(R.id.movie_img);
+
+            Uri imgUri = null;
+            if (movie.isFav()) {
+                //Log.w(TAG, "Getting img from saveLoc: " + movie.getPosterSaveLoc());
+                imgUri = Uri.fromFile(new File(movie.getPosterSaveLoc()));
+            } else {
+                //Log.w(TAG, "Getting img from remote api: " + tmdbUtil.getMainPosterUrl(movie));
+                imgUri = Uri.parse(tmdbUtil.getMainPosterUrl(movie));
+            }
+            Log.w(TAG, "Img URI: " + imgUri);
             Picasso.with(getActivity())
-                    .load(tmdbUtil.getMainPosterUrl(movie))
+                    //.load(tmdbUtil.getMainPosterUrl(movie))
+                    .load(imgUri)
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                             //   .resize(350,350)
                             //.resize(150,150)
                             //.centerCrop()
                     .into(imgView);
-
 
         }
 
@@ -324,7 +336,7 @@ public class MovieDetailsFragment extends Fragment {
             Log.i(TAG, "onFavoutireClick called");
             if (movie != null) {
                 movie.setIsFav(true);
-                String fileSaveLoc = cutil.saveImg(tmdbUtil.getPosterUrl(movie), movie.getPosterPath());
+                String fileSaveLoc = cutil.saveImg(tmdbUtil.getMainPosterUrl(movie), movie.getPosterPath());
                 movie.setPosterSaveLoc(fileSaveLoc);
                 MovieUtil.saveMovie(getActivity(), movie);
             } else {

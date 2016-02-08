@@ -3,6 +3,7 @@ package com.example.kuldeepgupta.popularmoviesapp.tmdb.movie;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.kuldeepgupta.popularmoviesapp.provider.movie.MovieColumns;
@@ -11,6 +12,7 @@ import com.example.kuldeepgupta.popularmoviesapp.provider.movie.MovieCursor;
 import com.example.kuldeepgupta.popularmoviesapp.provider.movie.MovieSelection;
 
 import java.awt.font.TextAttribute;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -127,9 +129,11 @@ public class MovieUtil {
         MovieContentValues movieVal = new MovieContentValues();
         movieVal.putMid(movie.getMid());
         movieVal.putTitle(movie.getTitle());
+        movieVal.putPlotsynopsis(movie.getPlotSynopsis());
         movieVal.putReleasedate(movie.getReleaseDate());
         movieVal.putPosterpath(movie.getPosterPath());
         movieVal.putPostersaveloc(movie.getPosterSaveLoc());
+        movieVal.putUserrating(movie.getUserRating());
         context.getContentResolver().insert(MovieColumns.CONTENT_URI, movieVal.values());
     }
 
@@ -148,7 +152,7 @@ public class MovieUtil {
                     //public Movie(long mid, String title, String posterPath, String releaseDate, String plotSynopsis, double userRating) {
                     Movie movie = new Movie(cursor.getLong(cursor.getColumnIndex(MovieColumns.MID)), cursor.getString(cursor.getColumnIndex(MovieColumns.TITLE))
                             , cursor.getString(cursor.getColumnIndex(MovieColumns.POSTERPATH)), cursor.getString(cursor.getColumnIndex(MovieColumns.RELEASEDATE)),
-                            cursor.getString(cursor.getColumnIndex(MovieColumns.PLOTSYNOPSIS)), cursor.getDouble(cursor.getColumnIndex(MovieColumns.USERRATING)));
+                            cursor.getString(cursor.getColumnIndex(MovieColumns.PLOTSYNOPSIS)), cursor.getString(cursor.getColumnIndex(MovieColumns.POSTERSAVELOC)), cursor.getDouble(cursor.getColumnIndex(MovieColumns.USERRATING)));
                     movie.setIsFav(true);
                     movies.add(movie);
                 }
@@ -158,8 +162,8 @@ public class MovieUtil {
             }
             return Collections.emptyList();
         } finally {
-             if(cursor != null && !cursor.isClosed())
-                 cursor.close();
+            if (cursor != null && !cursor.isClosed())
+                cursor.close();
         }
     }
 

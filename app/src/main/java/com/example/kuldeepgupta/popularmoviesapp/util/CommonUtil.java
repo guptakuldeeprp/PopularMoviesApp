@@ -49,15 +49,15 @@ public class CommonUtil {
         boolean isLargeDev = (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-        if(isLargeDev)
+        if (isLargeDev)
             return true;
 
-        return context.getString(R.string.large_dev).equals(TRUE); // checks for landscape mode
+        return context.getString(R.string.large_dev).equals(TRUE); // checks for landscape mode as well
     }
 
     public String saveImg(String uri, String imgName) {
         File saveImg = getFileObj(imgName);
-        Log.i(TAG,"File loc to save img " + imgName +" is " + saveImg.getAbsolutePath());
+        Log.w(TAG,"File loc to save img " + imgName +" is " + saveImg.getAbsolutePath());
         Picasso.with(context).load(uri).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(getTarget(saveImg));
         return saveImg.getAbsolutePath();
 
