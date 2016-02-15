@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kuldeepgupta.popularmoviesapp.data.adapter.async.AsyncReviewAdapter;
 import com.example.kuldeepgupta.popularmoviesapp.data.adapter.async.AsyncTrailerAdapter;
@@ -91,30 +92,23 @@ public class MovieDetailsFragment extends Fragment {
 
     private void handleNewInstance() {
 
-        //Log.w(TAG, getActivity().getClass().getName());
+
         if (cutil.isLargeDevice()) {
-            //Log.w(TAG, "created as a fragment within " + getActivity().getClass().getName());
+
             if (getArguments() != null)
                 movie = (Movie) getArguments().getParcelable(getString(R.string.movie_key));
         } else {
-            //Log.w(TAG, "created as a fragment in new " + getActivity().getIntent().toString());
+
             if (getActivity().getIntent().getExtras() != null)
                 movie = (Movie) getActivity().getIntent().getExtras().getParcelable(getString(R.string.movie_key));
         }
-        /*if (getActivity().getIntent() != null) {
-            Log.w(TAG,"created as a fragment of MovieDetailsActivity " + getActivity().getIntent().toString());
-            if (getActivity().getIntent().getExtras() != null)
-                movie = (Movie) getActivity().getIntent().getExtras().getParcelable(getString(R.string.movie_key));
-        } else {
-            Log.w(TAG,"created as a fragment of MainActivity");
-            movie = (Movie) getArguments().getParcelable(getString(R.string.movie_key));
-        }*/
+
 
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //menu.clear();
+
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_movie_details, menu);
     }
@@ -152,14 +146,14 @@ public class MovieDetailsFragment extends Fragment {
             ImageView favImgView = (ImageView) rootView.findViewById(R.id.movie_favourite_img);
             favImgView.setOnClickListener(new FavouriteClickListener(movie));
 
-            //ArrayAdapter<String> reviewAdapter = new ArrayAdapter<String>(getActivity(), R.layout.item_review, R.id.review, (List<String>) null);
+
 
             ArrayAdapter<String> reviewAdapter = new ArrayAdapter<String>(getActivity(), R.layout.item_review, R.id.review, new ArrayList<String>());
             AsyncReviewAdapter endlessReviewAdapter = new AsyncReviewAdapter(reviewAdapter, movie);
             ListView reviewList = (ListView) rootView.findViewById(R.id.movie_reviews);
             reviewList.setAdapter(endlessReviewAdapter);
 
-            //ArrayAdapter<String> trailerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.item_trailer, R.id.trailer_caption, (List<String>) null);
+
             AsyncTrailerAdapter endlessTrailerAdapter = null;
             if (movie.getTrailerKeys() != null && movie.getTrailerKeys().size() != 0) {
                 ArrayAdapter<String> trailerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.item_trailer, R.id.trailer_caption, new ArrayList<>(MovieUtil.getTrailerKeysDescMap(movie).keySet()));
@@ -180,10 +174,8 @@ public class MovieDetailsFragment extends Fragment {
 
             Uri imgUri = null;
             if (movie.isFav()) {
-                //Log.w(TAG, "Getting img from saveLoc: " + movie.getPosterSaveLoc());
                 imgUri = Uri.fromFile(new File(movie.getPosterSaveLoc()));
             } else {
-                //Log.w(TAG, "Getting img from remote api: " + tmdbUtil.getMainPosterUrl(movie));
                 imgUri = Uri.parse(tmdbUtil.getMainPosterUrl(movie));
             }
             Log.w(TAG, "Img URI: " + imgUri);
@@ -192,9 +184,6 @@ public class MovieDetailsFragment extends Fragment {
                     .load(imgUri)
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
-                            //   .resize(350,350)
-                            //.resize(150,150)
-                            //.centerCrop()
                     .into(imgView);
 
         }
@@ -203,30 +192,7 @@ public class MovieDetailsFragment extends Fragment {
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-   /* public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -255,28 +221,6 @@ public class MovieDetailsFragment extends Fragment {
         return true;
     }
 
-    /*public void onTrailerClick(View view) {
-        Log.i(TAG, "onTrailerClick called");
-        TextView tv = (TextView) view;
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MovieUtil.getTrailerAppUrlFromDesc(movie, tv.getText().toString().trim())));
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(MovieUtil.getTrailerWebUrlFromDesc(movie, tv.getText().toString().trim())));
-            startActivity(intent);
-        }
-
-
-    }
-*/
-   /* public void onFavoutireClick(View view) {
-        Log.i(TAG, "onFavoutireClick called");
-        movie.setIsFav(true);
-        String fileSaveLoc = cutil.saveImg(tmdbUtil.getPosterUrl(movie), movie.getPosterPath());
-        movie.setPosterSaveLoc(fileSaveLoc);
-        MovieUtil.saveMovie(getActivity(), movie);
-    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -339,19 +283,12 @@ public class MovieDetailsFragment extends Fragment {
                 String fileSaveLoc = cutil.saveImg(tmdbUtil.getMainPosterUrl(movie), movie.getPosterPath());
                 movie.setPosterSaveLoc(fileSaveLoc);
                 MovieUtil.saveMovie(getActivity(), movie);
+                Toast.makeText(getActivity(), "Added to favourites!",
+                        Toast.LENGTH_LONG).show();
             } else {
                 Log.e(TAG, "No movie tag found in the view");
             }
         }
     }
 
-  /*  @Override
-    public void onDetach() {
-        super.onDetach();
-        *//*if (!cutil.isLargeDevice()) // If we are detaching this fragment because we are no longer on a large device, then we should invalidate the menu options generated by this fragment
-        {
-            Log.w(TAG,"Got back to small screen. Hiding menu item");
-            setMenuVisibility(false);
-        }*//*
-    }*/
 }

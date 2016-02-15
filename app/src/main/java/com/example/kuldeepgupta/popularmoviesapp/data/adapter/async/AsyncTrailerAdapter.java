@@ -32,12 +32,11 @@ public class AsyncTrailerAdapter extends AbstractAsyncArrayAdapter<String> {
 
     @Override
     protected List<String> loadListData(int page) {
-        //Log.w(TAG, "page: " + page);
+
         // trailers do not have multiple pages
         if(page == 1 && movie != null) {
             tmdbUtil.setTrailerKeys(movie);
             if(movie.getTrailerKeys() == null || movie.getTrailerKeys().isEmpty()) {
-                //stopAppending();
                 return NA;
             }
             Set<String> trailersKeys = MovieUtil.getTrailerKeysDescMap(movie).keySet();

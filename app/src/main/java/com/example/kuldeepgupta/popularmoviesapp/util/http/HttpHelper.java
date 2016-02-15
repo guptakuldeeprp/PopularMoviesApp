@@ -15,11 +15,10 @@ import java.net.URL;
 public class HttpHelper {
 
     private static final String CONTENT_TYPE = "content-type";
-    //private static final String JSON_RESPONSE_TYPE = "application/json";
 
     public static HttpResponseWrapper get(String urlStr) throws IOException{
         HttpURLConnection urlConnection = null;
-        //try {
+
 
             URL url = new URL(urlStr);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -28,7 +27,7 @@ public class HttpHelper {
             String response = null;
             int code = urlConnection.getResponseCode();
             String responseType = urlConnection.getHeaderField(CONTENT_TYPE);
-            //System.out.println("response type: " + responseType);
+
             if(code == HttpURLConnection.HTTP_OK) {
 
                 response = readAsString(urlConnection.getInputStream(), true);
@@ -38,14 +37,7 @@ public class HttpHelper {
                 response = readAsString(urlConnection.getErrorStream(), true);
                 return new HttpResponseWrapper(code, "", responseType, true, response);
             }
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (ProtocolException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        //return null;
+
     }
 
     public static String readAsString(InputStream inputStream, boolean appendNewLine) throws IOException {

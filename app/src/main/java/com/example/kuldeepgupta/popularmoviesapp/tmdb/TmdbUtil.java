@@ -52,11 +52,6 @@ public class TmdbUtil {
     private String apiBaseUrl;
     private static final TmdbUtil INSTANCE = new TmdbUtil();
 
-//    public TmdbUtil(Context context) {
-//
-//        this.context = context;
-//    }
-
     private TmdbUtil() {
 
     }
@@ -65,14 +60,14 @@ public class TmdbUtil {
 
     public static TmdbUtil get()
     {
-        //Log.w(TAG,"get without context called ");
+
         if(INSTANCE.context == null)
             throw new IllegalStateException("Context is not initialized!");
         return INSTANCE;
     }
 
     public static TmdbUtil get(Context context) {
-        //Log.w(TAG,"get with context called: " + context);
+
         if(context != null)
             synchronized (INSTANCE){
                 INSTANCE.setContext(context);
@@ -90,8 +85,6 @@ public class TmdbUtil {
     }
 
     public String getBaseUrl() {
-//        AsyncHttpTask httpTask = new AsyncHttpTask();
-//        httpTask.execute(appendApiKey(context.getString(R.string.tmdb_config)));
         if(baseUrl == null)
             baseUrl = "http://image.tmdb.org/t/p/";
         return baseUrl;
@@ -146,7 +139,6 @@ public class TmdbUtil {
 
     public List<Movie> discoverMovies(int page, SortBy sortBy) {
         String movieDiscUrlStr = getMovieDiscoveryUrl(page, sortBy);
-        //Log.w(TAG, "movieDiscUrlStr: " + movieDiscUrlStr);
         try {
             HttpResponseWrapper response = HttpHelper.get(movieDiscUrlStr);
             if(response.isFailed()) {
@@ -170,7 +162,6 @@ public class TmdbUtil {
 
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
-            //e.printStackTrace();
         }
         catch (JSONException e) {
             Log.e(TAG, "Obtained response is not a valid JSON string: " + e.getMessage(), e);
@@ -241,7 +232,6 @@ public class TmdbUtil {
 
         try {
             String videoUrl = getMovieVideoUrl(movieId);
-            //Log.w(TAG,"Movie trailer URL: " + videoUrl);
             HttpResponseWrapper response = HttpHelper.get(videoUrl);
             if(response.isFailed()) {
                 Log.e(TAG,"HTTP request failed!");

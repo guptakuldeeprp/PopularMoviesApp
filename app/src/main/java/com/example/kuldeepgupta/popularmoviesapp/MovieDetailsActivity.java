@@ -20,7 +20,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             return;
         }*/
         setContentView(R.layout.activity_movie_details);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (savedInstanceState == null) {
             movie = (Movie) getIntent().getParcelableExtra(getString(R.string.movie_key));
             getSupportFragmentManager().beginTransaction()
@@ -29,7 +29,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         invalidateOptionsMenu();
-        //setContentView(R.layout.activity_movie_details);
+
 
 
     }

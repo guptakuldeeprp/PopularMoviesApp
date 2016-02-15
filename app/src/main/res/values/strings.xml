@@ -13,7 +13,7 @@
 
 
     <!-- TMDB related constants -->
-    <string name="tmdb_api_key">38ccb91b04222b3a0450aebdf66d9e51</string>
+    <string name="tmdb_api_key"></string>
     <string name="tmdb_config">/configuration</string>
     <string name="tmdb_movie_discover">/discover/movie</string>
     <string name="tmdb_movie_video">/movie/%d/videos</string>
@@ -35,4 +35,5 @@
     <string name="mi_fav">Favourites</string>
     <string name="isFavView">isFavView</string>
     <string name="share_trailer">Share Trailer URL</string>
+    <string name="movie_page">page_no</string>
 </resources>

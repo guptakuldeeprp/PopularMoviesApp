@@ -27,12 +27,10 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     private static final String TAG = MovieAdapter.class.getName();
     private Context context;
     private int layoutResourceId;
-    //private List<Movie> mGridData = new ArrayList<Movie>();
     private List<Movie> gridData;
     private TmdbUtil tmdbUtil;
 
     public MovieAdapter(Context context, int layoutResourceId, List<Movie> dataList) {
-        //this(context, layoutResourceId, dataList, TmdbUtil.get());
         super(context, layoutResourceId, dataList);
         this.context = context;
         this.layoutResourceId = layoutResourceId;
@@ -40,15 +38,6 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         tmdbUtil = TmdbUtil.get();
 
     }
-
-
-//    public MovieAdapter(Context context, int layoutResourceId, List<Movie> dataList, TmdbUtil tmdbUtil) {
-//        super(context, layoutResourceId, dataList);
-//        this.context = context;
-//        this.layoutResourceId = layoutResourceId;
-//        this.gridData = dataList;
-//        this.tmdbUtil = tmdbUtil;
-//    }
 
 
     /**
@@ -77,21 +66,16 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         Uri imgUri = null;
         if (movie.isFav()) {
-            //Log.w(TAG, "Getting img from saveLoc: " + movie.getPosterSaveLoc());
             imgUri = Uri.fromFile(new File(movie.getPosterSaveLoc()));
         } else {
-            //Log.w(TAG, "Getting img from remote api: " + tmdbUtil.getMainPosterUrl(movie));
             imgUri = Uri.parse(tmdbUtil.getPosterUrl(movie));
 
         }
         Picasso.with(context)
-                //.load(tmdbUtil.getPosterUrl(movie))
                 .load(imgUri)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .fit()
-                        //.resize(150,150)
-                        //.centerCrop()
                 .into(image);
         view.setTag(movie);
         return view;

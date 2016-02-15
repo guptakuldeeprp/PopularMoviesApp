@@ -52,14 +52,6 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
         startProgressAnimation();
         return pendingView;
 
-
-            /*ImageView imgView = new ImageView(parent.getContext());
-            imgView.setImageResource(R.drawable.ic_popup_sync_1);
-
-
-        imgView.setVisibility(View.VISIBLE);
-        imgView.startAnimation(rotate);
-        return imgView;*/
     }
 
     void startProgressAnimation() {
@@ -72,11 +64,11 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
 
     @Override
     protected boolean cacheInBackground() throws Exception {
-        //Log.w(TAG,"Caching in bg..");
+
         ++page;
         list = loadListData(page);
         if(list == null || list.isEmpty()) {
-            //throw new RuntimeException("Empty data");
+            --page; // restore back the page
             return false;
         }
         else
@@ -96,7 +88,6 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
         }
         else
         {
-            //System.out.println("No wrapped Movie Adapter found!");
             Log.e(TAG,"No wrapped ArrayAdapter found!");
         }
     }
@@ -120,7 +111,7 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
             return underlying;
 
         }
-            //return wrappedAdapter.
+
         return null;
     }
 
@@ -132,13 +123,8 @@ public  abstract class AbstractAsyncArrayAdapter<T> extends EndlessAdapter {
     @Override
     protected boolean onException(View pendingView, Exception e) {
         Log.e(TAG,e.getMessage(),e);
-        /*if(pendingView != null) {
-            Log.w(TAG,"disabling pending view");
-            pendingView.setVisibility(View.GONE);
-            //this.pendingView = null;
-        }*/
         return true;
-        //return super.onException(pendingView, e);
+
     }
     public ArrayAdapter getDelegateAdapter() {
         return (ArrayAdapter) getWrappedAdapter();

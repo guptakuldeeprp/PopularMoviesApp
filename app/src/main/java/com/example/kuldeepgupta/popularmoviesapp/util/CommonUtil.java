@@ -82,16 +82,7 @@ public class CommonUtil {
         }
 
         return new File(baseDir,fileName);
-        /*boolean isSDPresent = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (isSDPresent) {
-            Log.v(TAG, "SD card present");
-            return new File(Environment.getExternalStorageState(), fileName);
-        }
-        else {
-            Log.v(TAG, "SD card absemt");
-            return new File(context.getFilesDir(), fileName);
-        }
-*/
+
     }
 
     public static boolean isSDCardPresent() {

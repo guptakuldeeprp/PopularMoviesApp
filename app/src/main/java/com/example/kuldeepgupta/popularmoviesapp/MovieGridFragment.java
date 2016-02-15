@@ -41,12 +41,12 @@ public class MovieGridFragment extends Fragment {
     private static final String MOVIE_KEY = "MOVIES";
 
     private OnFragmentInteractionListener mListener;
-
-    //private AsyncMovieAdapter movieAdapter;
     private AbstractAsyncArrayAdapter movieAdapter;
     private GridView grid;
     private boolean isFavView;
     private CommonUtil cutil;
+    private boolean moreMoviesToFetch = true;
+    //private int pageNo;
 
     List<Movie> movies;
 
@@ -63,20 +63,20 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(cutil == null)
+        if (cutil == null)
             cutil = CommonUtil.get();
         movies = new ArrayList<>();
         if (savedInstanceState != null) {
-            isFavView = savedInstanceState.getBoolean(getString(R.string.isFavView));
+            isFavView = savedInstanceState.getBoolean(getString(R.string.isFavView), false);
             movies = (List<Movie>) savedInstanceState.get(getString(R.string.movie_arr_key));
-            //Log.i(TAG, "Retrieved list of movies from savedInstanceState");
-            if (movies == null)
+            if (movies == null) {
                 movies = new ArrayList<>();
+            }
+            if (isFavView && movies.size() > 0)
+                moreMoviesToFetch = false;
         } else {
             movies = new ArrayList<>();
         }
-
-        //getActivity().invalidateOptionsMenu();
         setHasOptionsMenu(true);
     }
 
@@ -86,8 +86,6 @@ public class MovieGridFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //Log.w(TAG,"onCreateOptionsMenu MovieGridFragment called");
-        //menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_movie, menu);
     }
@@ -98,24 +96,25 @@ public class MovieGridFragment extends Fragment {
         outState.putBoolean(getString(R.string.isFavView), isFavView);
         List<Movie> list = movieAdapter.getUnderlyingList();
         if (list != null) {
-            //Log.i(TAG, "Saving list of movies onSaveInstanceState");
             outState.putParcelableArrayList(getString(R.string.movie_arr_key), (ArrayList<? extends Parcelable>) list);
+            //Log.w(TAG, "Saving pageNo: " + movieAdapter.getPage());
+            //outState.putInt(getString(R.string.movie_page), movieAdapter.getPage());
+
         }
     }
 
     private boolean refreshMovieGrid(SortBy sortBy) {
-        //getActivity().findViewById()
-        //grid = (GridView) rootView.findViewById(R.id.grid_movie);
-
         mListener.removeDetailsFragment();
         if (movieAdapter != null) {
-            movieAdapter.setPage(0);
             movieAdapter.getDelegateAdapter().clear();
             if (isFavView) {
                 isFavView = false;
                 movieAdapter = createMovieAdapter(isFavView, sortBy);
             }
+            moreMoviesToFetch = true;
+            movieAdapter.setPage(0);
             // ideally should not use casting.
+
             //TODO: Find a better way to achieve this
             ((AsyncMovieAdapter) movieAdapter).setSortBy(sortBy);
             grid.setAdapter(movieAdapter);
@@ -132,13 +131,13 @@ public class MovieGridFragment extends Fragment {
     private boolean refreshFavMovieGrid() {
         mListener.removeDetailsFragment();
         if (movieAdapter != null) {
-            movieAdapter.setPage(0);
             movieAdapter.getDelegateAdapter().clear();
-            //movieAdapter.getDelegateAdapter().addAll(MovieUtil.getSavedMovies(getActivity()));
             if (!isFavView) {
                 isFavView = true;
                 movieAdapter = createMovieAdapter(isFavView, null);
             }
+            moreMoviesToFetch = true;
+            movieAdapter.setPage(0);
             grid.setAdapter(movieAdapter);
             movieAdapter.getDelegateAdapter().notifyDataSetChanged();
             movieAdapter.notifyDataSetChanged();
@@ -148,55 +147,6 @@ public class MovieGridFragment extends Fragment {
             return false;
         }
     }
-
-    /**
-     * Helper method to refresh the entire GridView based on the new SortBy criteria
-     */
-   /* private boolean refreshGrid(SortBy sortBy) {
-        //invalidateGrid();
-
-        //AsyncMovieAdapter movieAdapter = new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, new ArrayList<Movie>(), SortBy.DEFAULT);
-        if (movieAdapter != null) {
-            Log.v(TAG, "Refreshing movie grid with new sortby condition: " + sortBy);
-            movieAdapter.setPage(0);
-            movieAdapter.getDelegateAdapter().clear();
-            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
-            movieAdapter.notifyDataSetChanged();
-            if(isFavView) {
-                movieAdapter = new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
-            } else {
-
-                ((AsyncMovieAdapter)movieAdapter).setSortBy(sortBy);
-            }
-
-            grid.setAdapter(movieAdapter);
-
-            return true;
-        } else {
-
-            Log.e(TAG, "AsyncMovieAdapter is not initialized!");
-            return false;
-        }
-    }*/
-    private boolean changeMovieAdapter(AbstractAsyncArrayAdapter newMovieAdapter) {
-
-        if (movieAdapter != null) {
-            movieAdapter.setPage(0);
-            movieAdapter.getDelegateAdapter().clear();
-            movieAdapter.getDelegateAdapter().notifyDataSetChanged();
-            movieAdapter.notifyDataSetChanged();
-            grid.setAdapter(newMovieAdapter);
-            return true;
-
-        } else {
-            Log.e(TAG, "previous movieAdapter is not found!");
-            return false;
-        }
-        //movieAdapter = newMovieAdapter;
-    }
-
-
-    //private boolean
 
 
     @Override
@@ -221,20 +171,8 @@ public class MovieGridFragment extends Fragment {
         AbstractAsyncArrayAdapter<Movie> arrAdapter = null;
         movieAdapter = createMovieAdapter(isFavView, SortBy.DEFAULT);
 
-        /*if (isFavView) {
-            //arrAdapter = new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
-            movieAdapter = getMovieAdapter()
 
-        } else {
-            *//*movieAdapter = new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, SortBy.DEFAULT);
-            arrAdapter = movieAdapter;*//*
-            movieAdapter = new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, SortBy.DEFAULT);
-        }*/
-
-        //AsyncMovieAdapter ema = new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, SortBy.DEFAULT);
         grid = (GridView) rootView.findViewById(R.id.grid_movie);
-
-        //grid.setAdapter(arrAdapter);
         grid.setAdapter(movieAdapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -273,12 +211,22 @@ public class MovieGridFragment extends Fragment {
      * @return
      */
     public AbstractAsyncArrayAdapter<Movie> createMovieAdapter(boolean isFav, SortBy sortBy) {
-        if(movies == null)
+        if (movies == null)
             movies = new ArrayList<>();
-        if (isFav)
-            return new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
-        else
-            return new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, sortBy);
+        if (isFav) {
+            AbstractAsyncArrayAdapter<Movie> adapter = new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
+            if (moreMoviesToFetch)
+                adapter.setPage(0);
+            else
+                adapter.setPage(1);
+            //return new AsyncFavouriteMovieAdapter(getActivity(), R.layout.fragment_movie, movies);
+            return adapter;
+        } else {
+            AbstractAsyncArrayAdapter<Movie> adapter = new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, sortBy);
+            //adapter.setPage(pageNo);
+            //return new AsyncMovieAdapter(getActivity(), R.layout.fragment_movie, movies, sortBy);
+            return adapter;
+        }
     }
 
     @Override

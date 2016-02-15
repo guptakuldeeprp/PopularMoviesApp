@@ -32,10 +32,6 @@ public class MovieUtil {
     private static final String TRAILER_DESC_PREFIX = "Trailer";
     private static final Matcher TRAILER_DESC_MATCHER = Pattern.compile("Trailer\\d+").matcher("");
 
-    /*public static Map<String,String> getTrailerKeysDescMap(Movie movie) {
-        return getTrailerUrlsMap(movie.getTrailerKeys());
-    }*/
-
     public static String getTrailerAppUrlFromDesc(Movie movie, String trailerDesc) {
         return getTrailerAppUrlFromKey(getTrailerKeyFromDesc(movie, trailerDesc));
     }

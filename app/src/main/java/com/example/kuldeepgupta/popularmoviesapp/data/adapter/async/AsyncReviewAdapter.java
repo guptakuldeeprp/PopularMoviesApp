@@ -33,7 +33,6 @@ public class AsyncReviewAdapter extends AbstractAsyncArrayAdapter<String> {
         List<String> reviews = tmdbUtil.fetchReviews(movie.getMid(), page);
         if(reviews == null || reviews.isEmpty())
         {
-            //stopAppending();
             return NA;
         }
         return reviews;
